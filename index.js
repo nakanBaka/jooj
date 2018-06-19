@@ -1,24 +1,34 @@
-const Discord = require("discord.js");
-const bot = new Discord.Client({disableEveryone: true});
-
-bot.on("ready", async () => {
-  console.log(`${bot.user.username} is online!`);
-  bot.user.setActivity(`Hey, Wassup!`);
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const config = require('./config.json');
+const fs = require('fs');
+ 
+fs.readdir("./events/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    let eventFunction = require(`./events/${file}`);
+    let eventName = file.split(".")[0];
+client.on(eventName, (...args) => eventFunction.run(client, ...args));
+  });
 });
-
-bot.on("message", async message => {
-
+client.on("message", message => {
   if (message.author.bot) return;
-  if (message.channel.type === "dm") return;
-
-  let prefix = '-';
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
-
-  if (cmd === `${prefix}ping`){
-    message.channel.send("Pong!");
+  if (!message.content.startsWith(config.prefix)) return;
+ 
+  let command = message.content.split(" ")[0];
+  command = command.slice(config.prefix.length);
+ 
+  let args = message.content.split(" ").slice(1);
+  // The list of if/else is replaced with those simple 2 lines:
+ 
+  try {
+    let commandFile = require(`./commands/${command}.js`);
+    commandFile.run(client, message, args);
+  } catch (err) {
+    console.error(err);
   }
-});
 
-bot.login("NDQ1OTU3MjU5Njg0NDc4OTg1.DgrgyQ.vDljQENZYZYUaSGm0rrlX2ovYw4");
+ 
+});
+ 
+client.login(config.token)
