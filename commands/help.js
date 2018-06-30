@@ -1,7 +1,8 @@
 var discord = require('discord.js')
-message.channel.send("Enviei meus comandos em seu DM ❤❤❤")
+
 
 exports.run = (client, message, args) => {
+   message.channel.send("❤❤❤ mandei meus comandos em sua DM ❤❤❤")
     var embed = new discord.RichEmbed()
         .setAuthor(message.author.username, message.author.DisplayAvatarURL)
         .setColor("#FFBF00")
