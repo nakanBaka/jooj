@@ -1,4 +1,5 @@
 var discord = require('discord.js')
+message.channel.send("Enviei meus comandos em seu DM ❤❤❤")
 
 exports.run = (client, message, args) => {
     var embed = new discord.RichEmbed()
