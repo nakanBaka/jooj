@@ -68,14 +68,40 @@ client.on('messageDelete', async (message) => {
     logs.send(logembed);
 })
 
-client.on("message", message => {
-  if(message.content == 'café'){
-     var nameResult = args.join(' ');
-if (!nameResult) nameResult = null;
-client.user.setActivity(nameResult, {type: "STREAMING"});
+let xpAdd = Math.floor(Math.random() * 7) + 8;
+console.log(xpAdd);
 
- message.channel.send('droga! você descobriu, ok vou mudar para ${nameResult}')
+if (!xp[message.author.id]) {
+    xp[message.author.id] = {
+        xp: 0,
+        level: 1
+    };
 }
+
+
+let curxp = xp[message.author.id].xp;
+let curlvl = xp[message.author.id].level;
+let nxtLvl = xp[message.author.id].level * 300;
+xp[message.author.id].xp = curxp + xpAdd;
+if (nxtLvl <= xp[message.author.id].xp) {
+    xp[message.author.id].level = curlvl + 1;
+    let lvlup = new Discord.RichEmbed()
+        .setTitle("Parabéns!")
+        .addField("Você passou de nivel", `${message.author}`)
+        .setColor("#08ff00")
+        .addField("Para o level", curlvl + 1);
+
+    message.channel.send(lvlup).then(msg => {
+        msg.delete(5000)
+    });
+}
+fs.writeFile("./xp.json", JSON.stringify(xp), (err) => {
+            if (err) console.log(err)
+
+
+
+            // Goes in commands fold in a file name "level.js"
+
 
 // THIS  MUST  BE  THIS  WAY
 client.login(process.env.BOT_TOKEN);
