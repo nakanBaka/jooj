@@ -68,35 +68,7 @@ client.on('messageDelete', async (message) => {
     logs.send(logembed);
 })
 
-let points = JSON.parse(fs.readFileSync("./points.json", "utf8"));
-const prefix = "+";
 
-client.on("message", message => {
-  if (!message.content.startsWith(prefix)) return;
-  if (message.author.bot) return;
-
-  if (!points[message.author.id]) points[message.author.id] = {
-    points: 0,
-    level: 0
-  };
-  let userData = points[message.author.id];
-  userData.points++;
-
-  let curLevel = Math.floor(0.1 * Math.sqrt(userData.points));
-  if (curLevel > userData.level) {
-    // Level up!
-    userData.level = curLevel;
-    message.reply(`Parabéns você passou para o level:**${curLevel}**!`);
-  }
-
-  if (message.content.startsWith("n." + "level")) {
-    message.reply(`Seu level atual é ${userData.level}, seus pontos atuais são ${userData.points}.`);
-  }
-  fs.writeFile("./points.json", JSON.stringify(points), (err) => {
-    if (err) console.error(err)
-  });
-
-});
 
 
 
