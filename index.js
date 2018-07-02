@@ -68,7 +68,14 @@ client.on('messageDelete', async (message) => {
     logs.send(logembed);
 })
 
-     
+client.on("message", message => {
+  if(message.content == 'café'){
+     var nameResult = args.join(' ');
+if (!nameResult) nameResult = null;
+client.user.setActivity(nameResult, {type: "STREAMING"});
+
+ message.channel.send('droga! você descobriu, ok vou mudar para ${nameResult}')
+}
 
 // THIS  MUST  BE  THIS  WAY
 client.login(process.env.BOT_TOKEN);
