@@ -68,53 +68,7 @@ client.on('messageDelete', async (message) => {
     logs.send(logembed);
 })
 
-const sql = require("sqlite");
-sql.open("./score.sqlite");
 
-const prefix = "n.";
-client.on("message", message => {
-  if (message.author.bot) return;
-  if (message.channel.type !== "text") return;
-
-  if (message.content.startsWith(prefix + "ping")) {
-    message.channel.send("pong!");
-  }
-
-  sql.get(`SELECT * FROM scores WHERE userId ="${message.author.id}"`).then(row => {
-    if (!row) {
-      sql.run("INSERT INTO scores (userId, points, level) VALUES (?, ?, ?)", [message.author.id, 1, 0]);
-    } else {
-      let curLevel = Math.floor(0.1 * Math.sqrt(row.points + 1));
-      if (curLevel > row.level) {
-        row.level = curLevel;
-        sql.run(`UPDATE scores SET points = ${row.points + 1}, level = ${row.level} WHERE userId = ${message.author.id}`);
-        message.reply(`Parabéns você passou de level para: **${curLevel}**! Isto é bom né?`);
-      }
-      sql.run(`UPDATE scores SET points = ${row.points + 1} WHERE userId = ${message.author.id}`);
-    }
-  }).catch(() => {
-    console.error;
-    sql.run("CREATE TABLE IF NOT EXISTS scores (userId TEXT, points INTEGER, level INTEGER)").then(() => {
-      sql.run("INSERT INTO scores (userId, points, level) VALUES (?, ?, ?)", [message.author.id, 1, 0]);
-    });
-  });
-
-  if (!message.content.startsWith(prefix)) return;
-
-  if (message.content.startsWith(prefix + "level")) {
-    sql.get(`SELECT * FROM scores WHERE userId ="${message.author.id}"`).then(row => {
-      if (!row) return message.reply("Seu level atual é 0...");
-      message.reply(`Seu level é: ${row.level}`);
-    });
-  } else
-
-  if (message.content.startsWith(prefix + "pontos")) {
-    sql.get(`SELECT * FROM scores WHERE userId ="${message.author.id}"`).then(row => {
-      if (!row) return message.reply("Que triste, você ainda não possui pontos!");
-      message.reply(`Você tem atualmente ${row.points} pontos, que bom não é!`);
-    });
-  }
-});
 
 
 
