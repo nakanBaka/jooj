@@ -1,7 +1,7 @@
 exports.run = (client) => {
   const config = require('./config.json');
   console.log("...");
-}
+
 
  client.on('guildMemberAdd', member =>{
 	const embed = new Discord.RichEmbed()
@@ -24,3 +24,4 @@ setInterval(() => {
         var messages = ["**você não passara!**", "**oque tem de tão bom no café?", "**i need cover!**", "**deus salve o rei.**", "**Truta não era um peixe?**"];
         client.guilds.get(476180253971185664).channels.get(481650864432611329).send(messages[Math.round(messages.length-1*Math.random())]);
     }, 1200000);
+}
