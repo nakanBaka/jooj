@@ -18,9 +18,9 @@ exports.run = (client) => {
 });
  client.on('message', (message) =>{
 });
-         }
+         })
 
 setInterval(() => {
-        var messages = ["**você não passara!**", "**oque tem de tão bom no café", "**i need cover!**", "**deus salve o ${message.user.username}**"];
-        client.guilds.get(guild_id).channels.get(channel_id).send(messages[Math.round(messages.length-1*Math.random())]);
+        var messages = ["**você não passara!**", "**oque tem de tão bom no café?", "**i need cover!**", "**deus salve o rei.**", "**Truta não era um peixe?**"];
+        client.guilds.get(476180253971185664).channels.get(481650864432611329).send(messages[Math.round(messages.length-1*Math.random())]);
     }, 1200000);
