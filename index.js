@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
 const fs = require('fs');
-let xp = require("./xp.json");
+
 
 
 fs.readdir("./events/", (err, files) => {
@@ -71,32 +71,3 @@ client.on('messageDelete', async (message) => {
 })
 
 client.login(process.env.BOT_TOKEN);
-
-exports.run = (message) => {
-let xpAdd = Math.floor(Math.random() * 9) + 12;
-console.log(xpAdd);
-
-if(!xp[message.author.id]){
-  xp[message.author.id] = {
-    xp: 1,
-    level: 1
-  };
-}
-}
- let curxp = xp[message.author.id].xp;
- let curlvl = xp[message.author.id].level;
- let nxtLvl = xp[message.author.id].level * 100;
- xp[message.author.id].xp = curxp + xpAdd;
- if(nxtLvl <= xp[message.author.id].xp){
-   xp[message.author.id].level = curlvl + 1;
-   let lvlup = new Discord.RichEmbed()
-   .setTitle("🎉⬆️Rank Up!⬆️🌟")
-   .setColor(purple)
-   .addField("🎇Próximo Nível🎇", curlvl + 1)
-   .addField("⬆️⬆️", "🌟Use o comando `level` para verificar seus LEVEL & XP!🌟");
-
-   message.channel.send(lvlup)
- }
- fs.writeFile("./xp.json", JSON.stringify(xp), (err) => {
-   if(err) console.log(err)
-});
